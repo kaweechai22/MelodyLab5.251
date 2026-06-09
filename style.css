@@ -1595,3 +1595,249 @@ main.wrap{
     padding:11px 14px;
   }
 }
+
+/* v5.53 FIXED: apply selected neon mockup style to the real v5.52 base */
+.longitudinalFocusPage{
+  --neon-cyan:#19d8ff;
+  --neon-blue:#2688ff;
+  --neon-purple:#a855ff;
+  --neon-pink:#ff4d9d;
+  --neon-green:#53db65;
+}
+
+/* Simulation card: stronger neon frame, darker stage, graph remains scientifically unchanged */
+.longitudinalFocusPage .longitudinalMainViz{
+  background:linear-gradient(145deg,rgba(6,18,37,.96),rgba(13,16,48,.98)) !important;
+  border:1px solid rgba(45,212,255,.26) !important;
+  box-shadow:
+    0 22px 52px rgba(2,6,23,.38),
+    0 0 0 1px rgba(168,85,247,.16),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.longitudinalFocusPage .vizMediaFrame{
+  border-radius:24px !important;
+  border:1px solid rgba(34,211,238,.55) !important;
+  background:
+    radial-gradient(circle at 12% 15%,rgba(34,211,238,.18),transparent 30%),
+    radial-gradient(circle at 90% 12%,rgba(168,85,247,.22),transparent 34%),
+    linear-gradient(180deg,rgba(3,10,25,.96),rgba(4,12,30,.98)) !important;
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.28),
+    0 0 30px rgba(34,211,238,.18),
+    inset 0 0 36px rgba(34,211,238,.04) !important;
+}
+.longitudinalFocusPage .vizMediaFrame canvas{
+  border-color:rgba(34,211,238,.20) !important;
+  background:#020817 !important;
+}
+
+/* Player: icon-only glowing media controls like the selected example */
+.longitudinalFocusPage .embeddedPlayerBar{
+  margin-top:12px !important;
+  border-radius:24px !important;
+  border:1px solid rgba(34,211,238,.42) !important;
+  background:
+    radial-gradient(circle at 22% 0%,rgba(34,211,238,.18),transparent 35%),
+    radial-gradient(circle at 82% 0%,rgba(168,85,247,.20),transparent 35%),
+    linear-gradient(180deg,rgba(5,15,36,.92),rgba(3,7,22,.98)) !important;
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.22),
+    0 18px 38px rgba(2,6,23,.36),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar::before{
+  top:auto !important;
+  bottom:0 !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  width:78% !important;
+  height:3px !important;
+  opacity:.90 !important;
+  background:linear-gradient(90deg,rgba(34,211,238,0),rgba(34,211,238,.9),rgba(168,85,247,.9),rgba(244,63,180,.75),rgba(244,63,180,0)) !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar .playerCenterOnly{
+  gap:28px !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar .playerBtn{
+  width:62px !important;
+  height:62px !important;
+  border-radius:999px !important;
+  border:1.5px solid rgba(78,190,255,.75) !important;
+  background:
+    radial-gradient(circle at 32% 25%,rgba(255,255,255,.15),transparent 32%),
+    linear-gradient(145deg,rgba(8,22,50,.95),rgba(4,9,24,.98)) !important;
+  box-shadow:
+    0 0 0 4px rgba(34,211,238,.08),
+    0 0 24px rgba(34,211,238,.32),
+    inset 0 1px 0 rgba(255,255,255,.16) !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar .playerPrimary{
+  width:76px !important;
+  height:76px !important;
+  border-color:rgba(34,211,238,.98) !important;
+  background:
+    radial-gradient(circle at 30% 25%,rgba(255,255,255,.35),transparent 28%),
+    linear-gradient(135deg,#7c3aed 0%,#3b82f6 45%,#19d8ff 100%) !important;
+  box-shadow:
+    0 0 0 11px rgba(124,58,237,.18),
+    0 0 34px rgba(34,211,238,.58),
+    0 20px 38px rgba(59,130,246,.22),
+    inset 0 1px 0 rgba(255,255,255,.34) !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar .playerReset{
+  border-color:rgba(217,70,239,.86) !important;
+  box-shadow:
+    0 0 0 4px rgba(168,85,247,.10),
+    0 0 24px rgba(217,70,239,.34),
+    inset 0 1px 0 rgba(255,255,255,.16) !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar .playerGlyph{
+  color:#f7fbff !important;
+}
+
+/* Explanation bar */
+.longitudinalFocusPage .explainDetails{
+  border-radius:22px !important;
+  border:1px solid rgba(34,211,238,.30) !important;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(168,85,247,.12),transparent 36%),
+    rgba(6,15,34,.82) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 12px 26px rgba(2,6,23,.22) !important;
+}
+.longitudinalFocusPage .explainDetails summary{
+  font-size:1.2rem !important;
+  padding:18px 22px !important;
+}
+
+/* Parameters panel: colorful icon rows + sliders */
+.longitudinalFocusPage .neonControlViz{
+  border-radius:26px !important;
+  border:1px solid rgba(34,211,238,.28) !important;
+  background:
+    radial-gradient(circle at 0% 10%,rgba(34,211,238,.18),transparent 36%),
+    radial-gradient(circle at 100% 90%,rgba(168,85,247,.18),transparent 34%),
+    linear-gradient(145deg,rgba(6,18,38,.96),rgba(10,12,42,.96)) !important;
+  box-shadow:0 20px 48px rgba(2,6,23,.35),inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.longitudinalFocusPage .neonControlViz .panelTitleStack h3{
+  font-size:1.55rem !important;
+  margin-bottom:2px !important;
+}
+.longitudinalFocusPage .neonControlViz .panelSubtext{
+  font-size:1rem !important;
+  color:#aab9d2 !important;
+  margin-bottom:16px !important;
+}
+.longitudinalFocusPage .neonParamRow{
+  display:grid !important;
+  grid-template-columns:58px minmax(145px,.85fr) minmax(120px,1fr) 112px;
+  align-items:center !important;
+  gap:14px !important;
+  padding:17px 0 !important;
+  border-bottom:1px solid rgba(148,163,184,.12) !important;
+}
+.longitudinalFocusPage .neonParamRow:last-child{border-bottom:none !important}
+.longitudinalFocusPage .paramIcon{
+  width:48px;
+  height:48px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1.55rem;
+  font-weight:900;
+  box-shadow:0 0 24px rgba(255,255,255,.18),inset 0 1px 0 rgba(255,255,255,.20);
+}
+.longitudinalFocusPage .freqRow .paramIcon{background:linear-gradient(135deg,#155ee8,#1ed3ff)}
+.longitudinalFocusPage .ampRow .paramIcon{background:linear-gradient(135deg,#16a34a,#6ee767)}
+.longitudinalFocusPage .speedRow .paramIcon{background:linear-gradient(135deg,#db2777,#ff6aa8)}
+.longitudinalFocusPage .timeRow .paramIcon{background:linear-gradient(135deg,#6d28d9,#a855f7)}
+.longitudinalFocusPage .paramText label{
+  display:block !important;
+  margin:0 !important;
+  font-size:1rem !important;
+  line-height:1.25 !important;
+  color:#f2f7ff !important;
+  font-weight:900 !important;
+}
+.longitudinalFocusPage .paramText small{
+  display:block;
+  margin-top:2px;
+  font-size:.82rem;
+  line-height:1.1;
+  font-weight:800;
+}
+.longitudinalFocusPage .freqRow .paramText small{color:#2f8cff}
+.longitudinalFocusPage .ampRow .paramText small{color:#56e768}
+.longitudinalFocusPage .speedRow .paramText small{color:#ff5ca8}
+.longitudinalFocusPage .timeRow .paramText small{color:#a855f7}
+.longitudinalFocusPage .neonParamRow input[type="range"]{
+  width:100% !important;
+  height:7px !important;
+  padding:0 !important;
+  border:none !important;
+  border-radius:999px !important;
+  background:rgba(60,78,110,.45) !important;
+}
+.longitudinalFocusPage .freqRow input[type="range"]{accent-color:#278cff;color:#278cff}
+.longitudinalFocusPage .ampRow input[type="range"]{accent-color:#54de63;color:#54de63}
+.longitudinalFocusPage .speedRow input[type="range"]{accent-color:#ff4d9d;color:#ff4d9d}
+.longitudinalFocusPage .timeRow input[type="range"]{accent-color:#a855f7;color:#a855f7}
+.longitudinalFocusPage .paramValueWrap{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+}
+.longitudinalFocusPage .neonParamRow .valueBadge{
+  min-width:96px !important;
+  text-align:center !important;
+  display:inline-flex !important;
+  justify-content:center !important;
+  padding:11px 14px !important;
+  border-radius:16px !important;
+  background:rgba(2,8,25,.68) !important;
+  border:1px solid rgba(148,163,184,.18) !important;
+  color:#fff !important;
+  font-size:1.1rem !important;
+  font-weight:900 !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 22px rgba(2,6,23,.26) !important;
+}
+
+@media(max-width:760px){
+  .longitudinalFocusPage .neonControlViz{padding:22px 18px !important}
+  .longitudinalFocusPage .neonParamRow{
+    grid-template-columns:48px minmax(0,1fr) 44% !important;
+    grid-template-areas:
+      "icon text value"
+      "icon slider slider";
+    gap:8px 12px !important;
+    padding:15px 0 !important;
+  }
+  .longitudinalFocusPage .paramIcon{grid-area:icon;width:44px;height:44px;font-size:1.35rem}
+  .longitudinalFocusPage .paramText{grid-area:text}
+  .longitudinalFocusPage .neonParamRow input[type="range"]{grid-area:slider}
+  .longitudinalFocusPage .paramValueWrap{grid-area:value}
+  .longitudinalFocusPage .neonParamRow .valueBadge{min-width:82px !important;font-size:1rem !important;padding:9px 12px !important}
+  .longitudinalFocusPage .embeddedPlayerBar .playerCenterOnly{gap:20px !important}
+}
+@media(max-width:950px) and (orientation:landscape){
+  .longitudinalFocusPage .neonControlViz .panelTitleStack h3{font-size:1.2rem !important}
+  .longitudinalFocusPage .neonControlViz .panelSubtext{font-size:.82rem !important;margin-bottom:8px !important}
+  .longitudinalFocusPage .neonParamRow{
+    grid-template-columns:38px minmax(0,1fr) !important;
+    grid-template-areas:
+      "icon text"
+      "icon value"
+      "slider slider";
+    gap:6px 10px !important;
+    padding:11px 0 !important;
+  }
+  .longitudinalFocusPage .paramIcon{grid-area:icon;width:36px;height:36px;font-size:1.1rem}
+  .longitudinalFocusPage .paramText{grid-area:text}
+  .longitudinalFocusPage .paramText label{font-size:.86rem !important}
+  .longitudinalFocusPage .paramText small{font-size:.72rem}
+  .longitudinalFocusPage .paramValueWrap{grid-area:value;justify-content:flex-start}
+  .longitudinalFocusPage .neonParamRow input[type="range"]{grid-area:slider}
+  .longitudinalFocusPage .neonParamRow .valueBadge{min-width:72px !important;font-size:.82rem !important;padding:6px 9px !important}
+}

@@ -343,10 +343,9 @@
 - Moved x-axis closer to the particle field for a more balanced composition
 - Tightened the visual focus on the main graph area
 
-
-## v5.53 Longitudinal Neon Style
-- ใช้ฐานจาก v5.52 Longitudinal Mobile Focus
-- คงโครงสร้างหน้า Home และหน้าหลักอื่น ๆ ไว้เหมือนเดิม
-- ใช้สไตล์ปุ่มควบคุมและแผง Parameters แบบ neon ตามตัวอย่างที่ผู้ใช้เลือก
-- สำหรับหน้า `visualizer_longitudinal.html`
-- ปรับชื่อไฟล์ชุดใหม่เพื่อพร้อมอัปขึ้น GitHub ต่อจาก v5.52
+## v5.53 Longitudinal Neon Style FIXED
+- ทำใหม่จากฐาน v5.52 Longitudinal Mobile Focus
+- แก้ปัญหารอบก่อนที่เปลี่ยนชื่อเวอร์ชันแต่ยังไม่ใส่ neon style จริง
+- ปรับแถบ player เป็นปุ่ม neon icon-only ตามแบบที่เลือก
+- ปรับ Parameters เป็นแถวไอคอนสี + slider สี + value pill
+- คงกราฟ Longitudinal Wave และหลักฟิสิกส์เดิม
