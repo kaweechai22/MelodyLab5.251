@@ -2159,3 +2159,91 @@ main.wrap{
     padding:2px 4px !important;
   }
 }
+
+
+/* v5.64: full vertical graph area + compact UI */
+.longitudinalFocusPage .vizMediaFrame canvas{
+  aspect-ratio:1200/720 !important;
+  min-height:430px !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar{
+  margin-top:4px !important;
+  min-height:56px !important;
+  padding:5px 10px 7px !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar .playerCenterOnly{
+  gap:18px !important;
+}
+.longitudinalFocusPage .embeddedPlayerBar .playerBtn,
+.longitudinalFocusPage .embeddedPlayerBar .playerPrimary{
+  width:50px !important;
+  height:50px !important;
+  transform:none !important;
+}
+.longitudinalFocusPage .neonControlViz{
+  padding:14px 12px !important;
+}
+.longitudinalFocusPage .neonControlViz .panelTitleStack h3{
+  font-size:1.05rem !important;
+}
+.longitudinalFocusPage .panelSubtext{
+  display:none !important;
+}
+.longitudinalFocusPage .neonParamRow{
+  padding:6px 0 !important;
+  gap:5px 7px !important;
+  grid-template-columns:30px 1fr 58px !important;
+  grid-template-areas:"icon text value" ". slider slider" !important;
+}
+.longitudinalFocusPage .paramIcon{
+  width:28px !important;
+  height:28px !important;
+  font-size:.82rem !important;
+}
+.longitudinalFocusPage .paramText label{
+  font-size:.70rem !important;
+}
+.longitudinalFocusPage .paramText small{
+  font-size:.58rem !important;
+}
+.longitudinalFocusPage .neonParamRow .valueBadge{
+  min-width:52px !important;
+  font-size:.68rem !important;
+  padding:3px 5px !important;
+}
+
+@media(max-width:760px){
+  .longitudinalFocusPage .vizMediaFrame canvas{
+    aspect-ratio:1200/760 !important;
+    min-height:405px !important;
+  }
+  .longitudinalFocusPage .embeddedPlayerBar{
+    min-height:52px !important;
+    padding:4px 10px 6px !important;
+  }
+  .longitudinalFocusPage .embeddedPlayerBar .playerBtn,
+  .longitudinalFocusPage .embeddedPlayerBar .playerPrimary{
+    width:46px !important;
+    height:46px !important;
+  }
+}
+
+@media(max-width:950px) and (orientation:landscape){
+  .longitudinalFocusPage .longitudinalFocusGrid{
+    grid-template-columns:minmax(0,2.6fr) minmax(140px,.4fr) !important;
+    gap:10px !important;
+  }
+  .longitudinalFocusPage .vizMediaFrame canvas{
+    aspect-ratio:1200/520 !important;
+    min-height:260px !important;
+  }
+  .longitudinalFocusPage .embeddedPlayerBar{
+    min-height:46px !important;
+    padding:4px 8px 5px !important;
+  }
+  .longitudinalFocusPage .embeddedPlayerBar .playerBtn,
+  .longitudinalFocusPage .embeddedPlayerBar .playerPrimary{
+    width:40px !important;
+    height:40px !important;
+  }
+}

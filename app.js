@@ -412,55 +412,73 @@ function drawSpeaker(ctx, x, y, scale){
   ctx.translate(x,y);
   ctx.scale(scale,scale);
 
-  // blue sound waves
+  // Sound-wave rings
   for(let i=0;i<4;i++){
     ctx.beginPath();
-    ctx.strokeStyle = `rgba(34,150,255,${0.34 - i*0.06})`;
-    ctx.lineWidth = 3 - i*0.35;
-    ctx.arc(18,0,34+i*19,-0.82,0.82);
+    ctx.strokeStyle = `rgba(35,160,255,${0.46 - i*0.075})`;
+    ctx.lineWidth = 3.2 - i*0.42;
+    ctx.arc(14,0,38+i*18,-0.82,0.82);
     ctx.stroke();
   }
 
-  // speaker body
-  const body = ctx.createLinearGradient(-32,-58,18,58);
-  body.addColorStop(0,"#48566b");
-  body.addColorStop(.38,"#1b2433");
-  body.addColorStop(1,"#050914");
-  ctx.fillStyle=body;
-  ctx.strokeStyle="rgba(34,211,238,.42)";
-  ctx.lineWidth=1.4;
-  roundRect(ctx,-58,-60,38,120,12);
+  // Back plate
+  const plate = ctx.createLinearGradient(-76,-76,-18,76);
+  plate.addColorStop(0,"#2d3d53");
+  plate.addColorStop(.45,"#0b1728");
+  plate.addColorStop(1,"#030816");
+  ctx.fillStyle = plate;
+  ctx.strokeStyle = "rgba(34,211,238,.55)";
+  ctx.lineWidth = 1.6;
+  roundRect(ctx,-88,-76,54,152,16);
   ctx.fill();
   ctx.stroke();
 
-  // cone ring
-  const ring = ctx.createRadialGradient(-8,-8,6,0,0,54);
-  ring.addColorStop(0,"#162033");
-  ring.addColorStop(.45,"#0b1222");
-  ring.addColorStop(.68,"#1b7cff");
-  ring.addColorStop(1,"#00e5ff");
-  ctx.fillStyle=ring;
+  // Main outer rim
+  const outer = ctx.createRadialGradient(-30,-18,8,-30,0,62);
+  outer.addColorStop(0,"#d9fbff");
+  outer.addColorStop(.18,"#1ee8ff");
+  outer.addColorStop(.42,"#1368ff");
+  outer.addColorStop(.70,"#07142a");
+  outer.addColorStop(1,"#020617");
+  ctx.fillStyle = outer;
   ctx.beginPath();
-  ctx.ellipse(-6,0,36,48,0,0,Math.PI*2);
+  ctx.ellipse(-28,0,52,64,0,0,Math.PI*2);
   ctx.fill();
-  ctx.strokeStyle="rgba(185,240,255,.55)";
-  ctx.lineWidth=1.4;
+
+  ctx.strokeStyle="rgba(177,245,255,.78)";
+  ctx.lineWidth=2.2;
+  ctx.beginPath();
+  ctx.ellipse(-28,0,52,64,0,0,Math.PI*2);
   ctx.stroke();
 
-  const cone = ctx.createRadialGradient(-10,-8,4,-4,0,34);
-  cone.addColorStop(0,"#9feaff");
-  cone.addColorStop(.35,"#267dff");
-  cone.addColorStop(.75,"#07162c");
-  cone.addColorStop(1,"#020617");
-  ctx.fillStyle=cone;
+  // Inner cone
+  const cone = ctx.createRadialGradient(-32,-16,4,-28,0,46);
+  cone.addColorStop(0,"#bff6ff");
+  cone.addColorStop(.28,"#21b8ff");
+  cone.addColorStop(.62,"#08265d");
+  cone.addColorStop(1,"#01040c");
+  ctx.fillStyle = cone;
   ctx.beginPath();
-  ctx.ellipse(-5,0,23,33,0,0,Math.PI*2);
+  ctx.ellipse(-28,0,34,45,0,0,Math.PI*2);
   ctx.fill();
 
-  ctx.fillStyle="#010813";
+  // Central dome
+  const dome = ctx.createRadialGradient(-36,-12,4,-28,0,22);
+  dome.addColorStop(0,"#d7fbff");
+  dome.addColorStop(.42,"#139dff");
+  dome.addColorStop(1,"#020617");
+  ctx.fillStyle = dome;
   ctx.beginPath();
-  ctx.ellipse(-4,0,11,16,0,0,Math.PI*2);
+  ctx.ellipse(-28,0,17,23,0,0,Math.PI*2);
   ctx.fill();
+
+  // Neon highlight ring
+  ctx.strokeStyle="rgba(34,211,238,.95)";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.ellipse(-28,0,42,54,0,0,Math.PI*2);
+  ctx.stroke();
+
   ctx.restore();
 }
 
@@ -483,88 +501,89 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
   // Background
   const bg=ctx.createLinearGradient(0,0,w,h);
   bg.addColorStop(0,"#020817");
-  bg.addColorStop(1,"#07152c");
+  bg.addColorStop(1,"#06142c");
   ctx.fillStyle=bg;
   ctx.fillRect(0,0,w,h);
 
-  // Subtle grid
-  ctx.strokeStyle="rgba(148,163,184,.10)";
+  // Grid background
+  ctx.strokeStyle="rgba(148,163,184,.105)";
   ctx.lineWidth=1;
-  for(let x=0;x<w;x+=80){
+  for(let x=0;x<w;x+=78){
     ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke();
   }
-  for(let y=0;y<h;y+=52){
+  for(let y=0;y<h;y+=50){
     ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
   }
 
-  const eqX = w * 0.52;
-  const speakerX = 74;
-  const speakerY = h * 0.52;
-  const xMin = 142;
-  const xMax = w - 70;
+  const eqX = w * 0.555;
+  const xMin = 174;
+  const xMax = w - 78;
 
-  // Dense particle medium: larger particles and more rows so the graph fills the mobile screen more fully.
-  const rows = 16;
-  const rowGap = 16;
-  const particleRadius = 7.6;
+  // v5.64: large, full-height particle field.
+  // More rows + larger particles make the graph dominate the mobile screen.
+  const rows = 15;
+  const rowGap = 21;
+  const particleRadius = 8.9;
   const bandHeight = (rows - 1) * rowGap;
-  const y0 = Math.max(138, Math.min(h - bandHeight - 38, h * 0.31));
+  const y0 = Math.max(108, Math.min(h - bandHeight - 46, h * 0.27));
   const yCenter = y0 + bandHeight * 0.5;
-  const axisY = y0 + bandHeight + 18;
+  const axisY = y0 + bandHeight + 22;
 
-  const currentAmpPx = 15.5 * p.A; // keep longitudinal displacement physically consistent
-  const baseGap = 31;
-  const k = 2 * Math.PI / 255;
+  const speakerX = 78;
+  const speakerY = yCenter;
+  const currentAmpPx = 17.0 * p.A;
+  const baseGap = 38;
+  const k = 2 * Math.PI / 270;
   const phase = vizState.t * 0.105 * p.speed;
   const obsRow = Math.floor(rows/2);
   const obsBaseX = eqX;
   let obsX = obsBaseX;
   let obsY = y0 + obsRow * rowGap;
 
-  // Speaker source on the left
-  drawSpeaker(ctx, speakerX, yCenter, 1.05);
+  // Polished speaker source on the left
+  drawSpeaker(ctx, speakerX, speakerY, 1.08);
 
-  // Compression/rarefaction glow bands
-  const bandCenters=[xMin+55,xMin+235,xMin+430,xMin+620,xMin+805];
+  // Compression / rarefaction luminous bands
+  const bandCenters=[xMin+52,xMin+230,xMin+424,xMin+612,xMin+790];
   bandCenters.forEach((bx,i)=>{
-    const g=ctx.createLinearGradient(bx-48,0,bx+48,0);
+    const g=ctx.createLinearGradient(bx-54,0,bx+54,0);
     const col=i%2===0?"rgba(34,211,238,.15)":"rgba(168,85,247,.14)";
     g.addColorStop(0,"rgba(0,0,0,0)");
     g.addColorStop(.5,col);
     g.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=g;
-    ctx.fillRect(bx-56,Math.max(58,y0-18),112,bandHeight+50);
+    ctx.fillRect(bx-62,Math.max(58,y0-26),124,bandHeight+58);
   });
 
-  // Title label on canvas
+  // Small graph title
   ctx.fillStyle="#cfe9ff";
   ctx.font="20px Sarabun, system-ui, sans-serif";
   ctx.textAlign="left";
   ctx.fillText("Longitudinal Wave (คลื่นตามยาว)", 24, 34);
 
-  // Wave propagation arrow: moved closer to equilibrium/particle field
-  const arrowY = Math.max(72, y0 - 34);
+  // Wave direction arrow close to the particle field
+  const arrowY = Math.max(70, y0 - 50);
   ctx.save();
   ctx.strokeStyle="rgba(34,211,238,.96)";
   ctx.fillStyle="rgba(34,211,238,.96)";
   ctx.lineWidth=4;
   ctx.beginPath();
-  ctx.moveTo(w*0.36,arrowY);
-  ctx.lineTo(w*0.78,arrowY);
+  ctx.moveTo(w*0.32,arrowY);
+  ctx.lineTo(w*0.82,arrowY);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(w*0.78,arrowY);
-  ctx.lineTo(w*0.755,arrowY-13);
-  ctx.lineTo(w*0.755,arrowY+13);
+  ctx.moveTo(w*0.82,arrowY);
+  ctx.lineTo(w*0.795,arrowY-14);
+  ctx.lineTo(w*0.795,arrowY+14);
   ctx.closePath();
   ctx.fill();
   ctx.font="bold 18px Sarabun, system-ui, sans-serif";
   ctx.textAlign="center";
-  ctx.fillText("ทิศทางการเคลื่อนที่ของคลื่น", w*0.56, arrowY-18);
+  ctx.fillText("ทิศทางการเคลื่อนที่ของคลื่น", w*0.57, arrowY-18);
   ctx.restore();
 
-  // Equilibrium line and label
-  const eqLabelY = y0 - 12;
+  // Equilibrium marker aligned with red particle
+  const eqLabelY = y0 - 16;
   ctx.save();
   ctx.strokeStyle="rgba(255,255,255,.78)";
   ctx.setLineDash([8,8]);
@@ -580,34 +599,35 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
   ctx.fillText("ตำแหน่งสมดุล", eqX, eqLabelY);
   ctx.restore();
 
-  // x-axis: close to the medium, no numbers
+  // x-axis close to the particle field
   ctx.save();
   ctx.strokeStyle="rgba(255,245,220,.94)";
   ctx.fillStyle="rgba(255,255,255,.94)";
   ctx.lineWidth=2;
   ctx.beginPath();
-  ctx.moveTo(xMin-30, axisY);
-  ctx.lineTo(w-48, axisY);
+  ctx.moveTo(xMin-34, axisY);
+  ctx.lineTo(w-46, axisY);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(w-48, axisY);
-  ctx.lineTo(w-62, axisY-9);
-  ctx.moveTo(w-48, axisY);
-  ctx.lineTo(w-62, axisY+9);
+  ctx.moveTo(w-46, axisY);
+  ctx.lineTo(w-61, axisY-9);
+  ctx.moveTo(w-46, axisY);
+  ctx.lineTo(w-61, axisY+9);
   ctx.stroke();
   const tickCount = 18;
   for(let i=0;i<tickCount;i++){
-    const tx=(xMin-26)+i*((w-xMin-48)/(tickCount-1));
+    const tx=(xMin-30)+i*((w-xMin-48)/(tickCount-1));
     ctx.beginPath();
-    ctx.moveTo(tx,axisY-10);
-    ctx.lineTo(tx,axisY+10);
+    ctx.moveTo(tx,axisY-11);
+    ctx.lineTo(tx,axisY+11);
     ctx.stroke();
   }
   ctx.font="24px Sarabun, system-ui, sans-serif";
-  ctx.fillText("x", w-38, axisY+31);
+  ctx.fillText("x", w-36, axisY+31);
   ctx.restore();
 
-  // Particle grid with longitudinal displacement: compressions/rarefactions along x.
+  // Longitudinal particle field:
+  // particle displacement is along x only, so this remains physically correct.
   const baseXs=[];
   for(let x=xMin;x<=xMax;x+=baseGap) baseXs.push(x);
   if(!baseXs.some(v => Math.abs(v - eqX) < 0.5)) baseXs.push(eqX);
@@ -630,9 +650,9 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
     }
   }
 
-  // Red reference particle is drawn last and exactly on the equilibrium line at reset.
+  // Red observation particle drawn last
   ctx.save();
-  const obsRadius = particleRadius + 1.5;
+  const obsRadius = particleRadius + 1.7;
   drawParticleShadow(ctx,obsX,obsY,obsRadius);
   drawParticleSphere(ctx,obsX,obsY,obsRadius,"red");
   ctx.restore();
@@ -1062,8 +1082,8 @@ function resizeVisualizerCanvas(){
   let cssW = Math.max(280, Math.floor(rect.width - 4));
   const isLandscape = window.matchMedia("(orientation: landscape)").matches;
 
-  let cssH = isLandscape ? Math.round(cssW * 0.34) : Math.round(cssW * 0.50);
-  cssH = Math.max(isLandscape ? 170 : 285, Math.min(cssH, isLandscape ? 235 : 380));
+  let cssH = isLandscape ? Math.round(cssW * 0.42) : Math.round(cssW * 0.63);
+  cssH = Math.max(isLandscape ? 210 : 390, Math.min(cssH, isLandscape ? 310 : 520));
 
   const dpr = Math.max(1, window.devicePixelRatio || 1);
 
