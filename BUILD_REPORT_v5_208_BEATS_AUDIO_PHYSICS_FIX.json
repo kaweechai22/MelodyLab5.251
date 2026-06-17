@@ -1,0 +1,17 @@
+{
+  "version": "v5.208",
+  "base": "v5.207",
+  "fixes": [
+    "Corrected beats explanation",
+    "Reduced canvas height and balanced graph layout",
+    "Removed third physics bullet",
+    "Added real audio buttons using Web Audio API",
+    "Added volume control",
+    "Updates audio frequencies live when sliders move"
+  ],
+  "physics": {
+    "beat_frequency": "f_b = |f2 - f1|",
+    "approx_pitch": "(f1 + f2) / 2",
+    "audio": "two sine oscillators mixed together"
+  }
+}

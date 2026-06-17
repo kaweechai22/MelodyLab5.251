@@ -1,0 +1,9 @@
+{
+  "version": "v5.209",
+  "base": "v5.208",
+  "changes": [
+    "Removed requested sectionLead text about approximate heard frequency",
+    "Removed requested sectionLead text about beat-frequency phrase",
+    "Kept audio buttons and physics readouts"
+  ]
+}

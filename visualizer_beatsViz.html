@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MelodyLab v5.207 - Beats (บีตส์)</title>
+  <title>MelodyLab v5.209 - Beats (บีตส์)</title>
   <meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ">
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <meta name="melodylab-build-version" content="v5.207-beats-visualizer">
+  <meta name="melodylab-build-version" content="v5.209-beats-text-trim">
   <style>
     .beatReadoutBar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
     .beatReadoutBar>div{border:1px solid rgba(148,163,184,.18);background:rgba(15,23,42,.48);border-radius:14px;padding:9px 11px;min-height:56px}
@@ -28,6 +28,15 @@
     .ampRow .paramIcon{background:linear-gradient(135deg,#22c55e,#86efac)}
     .timeRow .paramIcon{background:linear-gradient(135deg,#8b5cf6,#c084fc)}
     .templateInsightCard li{line-height:1.55}
+
+    #visualizerCanvas{aspect-ratio:1200/390;max-height:390px}
+    .audioButtons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .audioBtn{border:1px solid rgba(148,163,184,.26);border-radius:16px;padding:12px 14px;font-weight:900;font-size:.95rem;cursor:pointer;touch-action:manipulation}
+    .audioBtn.playSound{background:linear-gradient(135deg,#16a34a,#22c55e);color:#ecfdf5;border-color:rgba(74,222,128,.55)}
+    .audioBtn.stopSound{background:linear-gradient(135deg,#991b1b,#ef4444);color:#fef2f2;border-color:rgba(248,113,113,.55)}
+    .audioStatus{margin-top:8px;color:#bbf7d0;font-size:.82rem;line-height:1.35}
+    .volumeRow .paramIcon{background:linear-gradient(135deg,#22c55e,#86efac)}
+    @media(max-width:760px){.audioButtons{grid-template-columns:1fr 1fr}.audioBtn{padding:11px 10px;font-size:.90rem}}
     .speedButtonsStandalone{display:flex;gap:8px;align-items:center;justify-content:flex-start;margin:6px 0 0 64px;position:relative;z-index:2}
     .speedButtons button{border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.76);color:#e5eef8;border-radius:10px;padding:5px 10px;font-size:.78rem;line-height:1.1;font-weight:800;cursor:pointer;touch-action:manipulation;min-width:58px;height:30px}
     .timeRow input[type=range]{touch-action:pan-x;min-width:0}
@@ -52,15 +61,15 @@
   <div class="sectionHead templateHead">
     <div>
       <h2>Beats (บีตส์)</h2>
-      <p class="sectionLead">บีตส์เกิดจากเสียงสองความถี่ใกล้กันซ้อนทับกัน ทำให้ความดังเพิ่ม–ลดเป็นจังหวะ โดยความถี่บีตเท่ากับ f<sub>b</sub> = |f₂ − f₁|</p>
-      <span class="versionBadge">v5.207 • beats visualizer</span>
+      <p class="sectionLead">บีตส์คือเสียงดัง–ค่อยสลับกันเป็นจังหวะ เมื่อคลื่นเสียงสองขบวนที่มีความถี่ใกล้กันซ้อนทับกัน</p>
+      <span class="versionBadge">v5.209 • beats text trimmed</span>
     </div>
   </div>
   <div class="visualizerTemplateGrid longitudinalFocusGrid">
     <div class="card mainViz templateMainViz longitudinalMainViz">
       <div class="vizMediaFrame">
         <div class="vizSingleModeLabel"><span>🎚️</span> Beats (บีตส์)</div>
-        <canvas id="visualizerCanvas" width="1200" height="470" aria-label="ภาพจำลองการเกิดบีตส์"></canvas>
+        <canvas id="visualizerCanvas" width="1200" height="390" aria-label="ภาพจำลองการเกิดบีตส์"></canvas>
         <div class="vizPlayerBar embeddedPlayerBar" aria-label="ปุ่มควบคุมภาพจำลอง">
           <div class="playerCluster playerCenter playerCenterOnly">
             <button id="vizPlayBtn" class="playerBtn playerPrimary playerPlay" title="เล่น" aria-label="เล่น"><span class="playerGlyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6.5v11l9-5.5-9-5.5z"/></svg></span></button>
@@ -81,7 +90,6 @@
           <div class="templateInsightCard"><div class="insightTitle">หลักฟิสิกส์ที่ใช้</div><ul>
             <li>ความถี่บีต: <b>fᵦ = |f₂ − f₁|</b></li>
             <li>คาบบีต: <b>Tᵦ = 1/fᵦ</b></li>
-            <li>เมื่อ envelope มีค่าสูง เสียงจะดังขึ้น; เมื่อ envelope ต่ำ เสียงจะค่อยลง</li>
           </ul></div>
           <div class="templateLegendCard">
             <div class="legendRow"><span class="beatLegendLine f1"></span><span>คลื่นเสียง f₁</span></div>
@@ -101,8 +109,11 @@
       <div class="field richField neonParamRow f1Row"><div class="paramIcon">f₁</div><div class="paramText"><label>ความถี่ที่ 1</label><small>เสียงตัวที่ 1</small></div><input id="vizFreq1" type="range" min="200" max="1000" step="1" value="440"><div class="paramValueWrap"><span id="vizFreq1Label" class="valueBadge">--</span></div></div>
       <div class="field richField neonParamRow f2Row"><div class="paramIcon">f₂</div><div class="paramText"><label>ความถี่ที่ 2</label><small>เสียงตัวที่ 2</small></div><input id="vizFreq2" type="range" min="200" max="1000" step="1" value="444"><div class="paramValueWrap"><span id="vizFreq2Label" class="valueBadge">--</span></div></div>
       <div class="field richField neonParamRow ampRow"><div class="paramIcon">A</div><div class="paramText"><label>แอมพลิจูด</label><small>ขนาดการสั่นของเสียงทั้งสอง</small></div><input id="vizAmp" type="range" min="0.20" max="1.50" step="0.05" value="0.90"><div class="paramValueWrap"><span id="vizAmpLabel" class="valueBadge">--</span></div></div>
+      <div class="field richField neonParamRow volumeRow"><div class="paramIcon">Vol</div><div class="paramText"><label>ระดับเสียงจริง</label><small>เริ่มเบาเพื่อความปลอดภัย</small></div><input id="vizVolume" type="range" min="0.00" max="0.20" step="0.01" value="0.06"><div class="paramValueWrap"><span id="vizVolumeLabel" class="valueBadge">--</span></div></div>
       <div class="field richField neonParamRow timeRow"><div class="paramIcon">◷</div><div class="paramText"><label>ความเร็วแอนิเมชัน</label><small>ควบคุมความเร็วภาพ ไม่ผูกกับความถี่เสียงจริง</small></div><input id="vizTimeSpeed" type="range" min="0.1" max="1.0" step="0.1" value="0.3"><div class="paramValueWrap"><span id="vizTimeLabel" class="valueBadge">--</span></div></div>
       <div class="speedButtons speedButtonsStandalone"><button type="button" id="vizSpeedDown">ช้าลง</button><button type="button" id="vizSpeedUp">เร็วขึ้น</button></div>
+      <div class="audioButtons"><button type="button" id="beatAudioPlay" class="audioBtn playSound">ฟังเสียงบีตส์จริง</button><button type="button" id="beatAudioStop" class="audioBtn stopSound">หยุดเสียง</button></div>
+      <div id="beatAudioStatus" class="audioStatus">ยังไม่เล่นเสียง: กดปุ่มฟังเสียงบีตส์จริงก่อน</div>
     </div>
   </div>
   <div class="card templateDataCard localDataCard" id="vizLogCard">
@@ -115,7 +126,7 @@
 <script>
 (() => {
 const $ = id => document.getElementById(id);
-const state = {running:true,time:0,last:performance.now(),raf:0,logs:[]};
+const state = {running:true,time:0,last:performance.now(),raf:0,logs:[],audio:{ctx:null,osc1:null,osc2:null,gain:null,playing:false}};
 function fmt(v,n=2){return Number(v).toFixed(n);}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 function params(){
@@ -123,6 +134,7 @@ function params(){
   const f2=Number($('vizFreq2')?.value||444);
   const A=Number($('vizAmp')?.value||0.90);
   const timeSpeed=Number($('vizTimeSpeed')?.value||0.3);
+  const volume=Number($('vizVolume')?.value||0.06);
   const df=Math.abs(f2-f1);
   const fMean=(f1+f2)/2;
   const Tb=df>0?1/df:Infinity;
@@ -132,13 +144,14 @@ function params(){
   else if(df<=10) stateText='บีตส์ชัด';
   else if(df<=20) stateText='บีตส์เร็ว';
   else stateText='ต่างความถี่มาก บีตส์สังเกตยาก';
-  return {f1,f2,A,timeSpeed,df,fMean,Tb,stateText};
+  return {f1,f2,A,timeSpeed,volume,df,fMean,Tb,stateText};
 }
 function updateLabels(){
   const p=params();
   $('vizFreq1Label').textContent=`${Math.round(p.f1)} Hz`;
   $('vizFreq2Label').textContent=`${Math.round(p.f2)} Hz`;
   $('vizAmpLabel').textContent=fmt(p.A,2);
+  $('vizVolumeLabel').textContent=`${fmt(p.volume*100,0)}%`;
   $('vizTimeLabel').textContent=`${fmt(p.timeSpeed,1)}×`;
   $('readF1').textContent=`${Math.round(p.f1)} Hz`;
   $('readF2').textContent=`${Math.round(p.f2)} Hz`;
@@ -176,8 +189,8 @@ function draw(){
   const {w,h}=canvasScale(canvas), ctx=canvas.getContext('2d'), p=params();
   updateLabels(); background(ctx,w,h);
   const left=94,right=w-54,plotW=right-left;
-  const lanes=[86,202,342];
-  const ampPx=28*p.A;
+  const lanes=[70,150,268];
+  const ampPx=22*p.A;
   const viewSeconds=2.0;
   const beatPhase=2*Math.PI*state.time;
   const dfForView=Math.max(0.2,p.df);
@@ -220,11 +233,11 @@ function draw(){
 
   const loudness=Math.abs(envelope(probeU));
   ctx.save();
-  ctx.fillStyle='rgba(2,6,23,.56)';ctx.strokeStyle='rgba(148,163,184,.18)';rr(ctx,right-220,h-104,200,70,16,true,true);
-  ctx.fillStyle='rgba(226,232,240,.92)';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('ความดังสัมพัทธ์ที่จุดสังเกต',right-204,h-78);
-  ctx.fillStyle='#f59e0b';ctx.fillRect(right-204,h-56,Math.max(2,160*loudness),10);
-  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.strokeRect(right-204,h-56,160,10);
-  ctx.fillStyle='rgba(226,232,240,.9)';ctx.font='700 12px system-ui,sans-serif';ctx.fillText(`${fmt(loudness*100,0)}%`,right-38,h-47);
+  ctx.fillStyle='rgba(2,6,23,.56)';ctx.strokeStyle='rgba(148,163,184,.18)';rr(ctx,right-210,h-84,190,58,16,true,true);
+  ctx.fillStyle='rgba(226,232,240,.92)';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('ความดังที่จุดสังเกต',right-196,h-61);
+  ctx.fillStyle='#f59e0b';ctx.fillRect(right-196,h-42,Math.max(2,145*loudness),9);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.strokeRect(right-196,h-42,145,9);
+  ctx.fillStyle='rgba(226,232,240,.9)';ctx.font='700 12px system-ui,sans-serif';ctx.fillText(`${fmt(loudness*100,0)}%`,right-45,h-34);
   ctx.restore();
 }
 function tick(now){
@@ -235,7 +248,7 @@ function tick(now){
 function play(){state.running=true;} function pause(){state.running=false;} function reset(){state.time=0;state.last=performance.now();draw();}
 function row(){
   const p=params();
-  return {timestamp:new Date().toISOString(),topic:'Beats',frequency_1_Hz:Math.round(p.f1),frequency_2_Hz:Math.round(p.f2),beat_frequency_Hz:Number(fmt(p.df,2)),beat_period_s:Number.isFinite(p.Tb)?Number(fmt(p.Tb,4)):null,amplitude:Number(fmt(p.A,2)),state:p.stateText};
+  return {timestamp:new Date().toISOString(),topic:'Beats',frequency_1_Hz:Math.round(p.f1),frequency_2_Hz:Math.round(p.f2),beat_frequency_Hz:Number(fmt(p.df,2)),beat_period_s:Number.isFinite(p.Tb)?Number(fmt(p.Tb,4)):null,amplitude:Number(fmt(p.A,2)),volume_percent:Number(fmt(p.volume*100,0)),state:p.stateText};
 }
 function renderTable(){
   const head=document.querySelector('.localHead'),body=document.querySelector('.localBody'); if(!head||!body)return;
@@ -254,17 +267,67 @@ function savePNG(){
   const c=$('visualizerCanvas'); if(!c)return;
   const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='melodylab_beats.png';a.click();
 }
+
+function audioStatus(text,on=false){
+  const el=$('beatAudioStatus'); if(!el)return;
+  el.textContent=text;
+  el.style.color=on?'#bbf7d0':'#cbd5e1';
+}
+function updateAudioParams(){
+  const a=state.audio; if(!a.playing||!a.ctx||!a.osc1||!a.osc2||!a.gain)return;
+  const p=params(), now=a.ctx.currentTime;
+  a.osc1.frequency.setTargetAtTime(p.f1,now,0.02);
+  a.osc2.frequency.setTargetAtTime(p.f2,now,0.02);
+  a.gain.gain.setTargetAtTime(Math.max(0,p.volume)*0.5,now,0.03);
+  audioStatus(`กำลังเล่นเสียงจริง: f₁ ${Math.round(p.f1)} Hz + f₂ ${Math.round(p.f2)} Hz, fᵦ ${fmt(p.df,1)} Hz`,true);
+}
+async function startBeatAudio(){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC){audioStatus('เบราว์เซอร์นี้ไม่รองรับ Web Audio API');return;}
+  stopBeatAudio(false);
+  const p=params();
+  const ctx=state.audio.ctx || new AC();
+  state.audio.ctx=ctx;
+  await ctx.resume();
+  const now=ctx.currentTime;
+  const gain=ctx.createGain();
+  gain.gain.setValueAtTime(0,now);
+  const osc1=ctx.createOscillator(), osc2=ctx.createOscillator();
+  osc1.type='sine'; osc2.type='sine';
+  osc1.frequency.setValueAtTime(p.f1,now);
+  osc2.frequency.setValueAtTime(p.f2,now);
+  osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+  osc1.start(now); osc2.start(now);
+  gain.gain.linearRampToValueAtTime(Math.max(0,p.volume)*0.5,now+0.08);
+  Object.assign(state.audio,{osc1,osc2,gain,playing:true});
+  audioStatus(`กำลังเล่นเสียงจริง: f₁ ${Math.round(p.f1)} Hz + f₂ ${Math.round(p.f2)} Hz, fᵦ ${fmt(p.df,1)} Hz`,true);
+}
+function stopBeatAudio(show=true){
+  const a=state.audio; if(!a.osc1&&!a.osc2&&!a.gain){if(show)audioStatus('หยุดเสียงแล้ว');return;}
+  const ctx=a.ctx, now=ctx?ctx.currentTime:0;
+  try{
+    if(a.gain&&ctx){a.gain.gain.cancelScheduledValues(now);a.gain.gain.setTargetAtTime(0.0001,now,0.03);}
+    if(a.osc1&&ctx)a.osc1.stop(now+0.10);
+    if(a.osc2&&ctx)a.osc2.stop(now+0.10);
+  }catch(e){}
+  state.audio.osc1=null; state.audio.osc2=null; state.audio.gain=null; state.audio.playing=false;
+  if(show)audioStatus('หยุดเสียงแล้ว');
+}
+
 function adjustSpeed(delta){
   const el=$('vizTimeSpeed'); if(!el)return;
   const next=Math.min(Number(el.max),Math.max(Number(el.min),Number(el.value)+delta));
   el.value=next.toFixed(1); draw();
 }
-['vizFreq1','vizFreq2','vizAmp','vizTimeSpeed'].forEach(id=>{$(id)?.addEventListener('input',draw);$(id)?.addEventListener('change',draw);});
+['vizFreq1','vizFreq2','vizAmp','vizVolume','vizTimeSpeed'].forEach(id=>{$(id)?.addEventListener('input',()=>{draw();updateAudioParams();});$(id)?.addEventListener('change',()=>{draw();updateAudioParams();});});
 $('vizPlayBtn')?.addEventListener('click',play);
 $('vizPauseBtn')?.addEventListener('click',pause);
 $('vizResetBtn')?.addEventListener('click',reset);
 $('vizSpeedDown')?.addEventListener('click',()=>adjustSpeed(-0.1));
 $('vizSpeedUp')?.addEventListener('click',()=>adjustSpeed(0.1));
+$('beatAudioPlay')?.addEventListener('click',startBeatAudio);
+$('beatAudioStop')?.addEventListener('click',()=>stopBeatAudio(true));
+window.addEventListener('pagehide',()=>stopBeatAudio(false));
 document.querySelector('.localCaptureBtn')?.addEventListener('click',()=>{state.logs.unshift(row());renderTable();});
 document.querySelector('.localDownloadBtn')?.addEventListener('click',downloadCSV);
 document.querySelector('.localPngBtn')?.addEventListener('click',savePNG);
