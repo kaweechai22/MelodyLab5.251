@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MelodyLab v5.184 - Sound Diffraction (การเลี้ยวเบนของเสียง)</title>
+  <title>MelodyLab v5.185 - Sound Diffraction (การเลี้ยวเบนของเสียง)</title>
   <meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ">
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <meta name="melodylab-build-version" content="v5.184-base167-diffraction-wavefront-mode">
+  <meta name="melodylab-build-version" content="v5.185-base167-diffraction-param-color-tune">
   <style>
     .diffractionReadoutBar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
     .diffractionReadoutBar>div{border:1px solid rgba(148,163,184,.18);background:rgba(15,23,42,.48);border-radius:14px;padding:9px 11px;min-height:56px}
@@ -30,6 +30,19 @@
     .guideSwitch input:checked + .guideSlider::before{transform:translateX(24px);background:#38bdf8}
     .guideRow .paramText small{max-width:230px}
     .guideRow .valueBadge{min-width:44px;text-align:center}
+
+    .neonParamRow .paramIcon{color:#f8fafc;border:1px solid rgba(255,255,255,.16);box-shadow:0 10px 24px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.10)}
+    .wavefrontModeRow .paramIcon{background:linear-gradient(135deg,#14b8a6,#06b6d4)}
+    .apertureRow .paramIcon{background:linear-gradient(135deg,#0ea5e9,#3b82f6)}
+    .freqRow .paramIcon{background:linear-gradient(135deg,#38bdf8,#3b82f6)}
+    .tempRow .paramIcon{background:linear-gradient(135deg,#fb923c,#f59e0b)}
+    .ampRow .paramIcon{background:linear-gradient(135deg,#22c55e,#86efac)}
+    .timeRow .paramIcon{background:linear-gradient(135deg,#a855f7,#c084fc)}
+    .guideRow .paramIcon{background:linear-gradient(135deg,#64748b,#94a3b8)}
+    .wavefrontModeRow select{border-color:rgba(20,184,166,.42);box-shadow:0 0 0 1px rgba(20,184,166,.05) inset}
+    .apertureRow .valueBadge{border-color:rgba(59,130,246,.28)}
+    .tempRow .valueBadge{border-color:rgba(249,115,22,.28)}
+    .guideRow .valueBadge{border-color:rgba(148,163,184,.28)}
     .explainDetails summary{font-size:1.05rem}
     .templateInsightCard ul{margin-top:10px}
     .templateInsightCard li{line-height:1.55}
