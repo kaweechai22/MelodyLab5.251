@@ -1,5 +1,5 @@
 const $=id=>document.getElementById(id);
-/* v5.216 index beats link fixed */
+/* v5.218 beats final audited */
 const rebuiltTopicModes = new Set(["soundReflection","soundRefraction","soundDiffraction","soundInterference","superposition","beatsViz","standingAir","resonanceViz","resonanceAirHarmonics","dopplerViz","shockWave","soundIntensity","soundIntensityLevel","soundLevelHearing","harmonicsViz","noisePollution","applicationsSound"]);
 const soundTopicModes = rebuiltTopicModes;
 
@@ -2833,6 +2833,7 @@ function initVisualizer(){
   if(activeVizSection?.dataset?.vizMode){ vizState.mode=activeVizSection.dataset.vizMode; }
   resizeVisualizerCanvas();
   document.querySelectorAll("[data-viz]").forEach(btn=>{
+    if(btn.classList.contains("directVizLink") || btn.dataset.pageLink) return;
     btn.onclick=()=>{
       document.querySelectorAll("[data-viz]").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");

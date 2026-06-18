@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MelodyLab v5.216 - Beats (บีตส์)</title>
+  <title>MelodyLab v5.218 - Beats (บีตส์)</title>
   <meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ">
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <meta name="melodylab-build-version" content="v5.216-index-beats-link-fixed">
+  <meta name="melodylab-build-version" content="v5.218-beats-final-audited">
   <style>
     .beatReadoutBar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
     .beatReadoutBar>div{border:1px solid rgba(148,163,184,.18);background:rgba(15,23,42,.48);border-radius:14px;padding:9px 11px;min-height:56px}
@@ -29,7 +29,7 @@
     .timeRow .paramIcon{background:linear-gradient(135deg,#8b5cf6,#c084fc)}
     .templateInsightCard li{line-height:1.55}
 
-    #visualizerCanvas{display:block;width:100% !important;height:min(52vh,380px) !important;min-height:300px !important;max-height:380px !important;aspect-ratio:auto !important}
+    #visualizerCanvas{display:block;width:100% !important;height:min(50vh,360px) !important;min-height:310px !important;max-height:360px !important;aspect-ratio:auto !important}
     .audioButtons{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-start;margin:10px 0 0 64px}
     .audioBtn{border:1px solid rgba(148,163,184,.24);border-radius:12px;padding:8px 12px;min-width:114px;height:34px;font-weight:850;font-size:.80rem;line-height:1;cursor:pointer;touch-action:manipulation;box-shadow:0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.08)}
     .audioBtn.playSound{background:linear-gradient(135deg,#15803d,#22c55e);color:#ecfdf5;border-color:rgba(74,222,128,.48)}
@@ -41,7 +41,7 @@
     .speedButtons button{border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.76);color:#e5eef8;border-radius:10px;padding:5px 10px;font-size:.78rem;line-height:1.1;font-weight:800;cursor:pointer;touch-action:manipulation;min-width:58px;height:30px}
     .timeRow input[type=range]{touch-action:pan-x;min-width:0}
     @media(max-width:760px){
-      #visualizerCanvas{height:min(48vh,360px) !important;min-height:300px !important;max-height:360px !important}
+      #visualizerCanvas{height:min(46vh,340px) !important;min-height:300px !important;max-height:340px !important}
       .beatReadoutBar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
       .beatReadoutBar>div{min-height:auto;padding:9px 10px}
       .beatReadoutBar>div:last-child{grid-column:1/-1}
@@ -63,7 +63,7 @@
     <div>
       <h2>Beats (บีตส์)</h2>
       <p class="sectionLead">บีตส์คือเสียงดัง–ค่อยสลับกันเป็นจังหวะ เมื่อคลื่นเสียงสองขบวนที่มีความถี่ใกล้กันซ้อนทับกัน</p>
-      <span class="versionBadge">v5.216 • index link fixed + DPR verified</span>
+      <span class="versionBadge">v5.218 • beats final audited</span>
     </div>
   </div>
   <div class="visualizerTemplateGrid longitudinalFocusGrid">
@@ -214,18 +214,21 @@ function draw(){
   const bandH=(plotBottom-plotTop)/3;
   const lanes=[plotTop+bandH*0.50,plotTop+bandH*1.50,plotTop+bandH*2.50];
   const ampPx=Math.min(26*p.A,bandH*0.30);
-  const viewSeconds=2.0;
-  const beatPhase=2*Math.PI*state.time;
-  const dfForView=Math.max(0.2,p.df);
-  const cycles1=12;
-  const cycles2=12 + Math.sign(p.f2-p.f1)*clamp(p.df*0.22,-8,8);
+  // Scaled teaching model: keep f1 and f2 as clean sine waves.
+  // The graph is intentionally time-scaled so students can see beats on a phone screen.
+  const baseCycles=8.0;
+  const beatCycles=clamp((p.df/10)*1.6,0.12,1.6);
+  const centerCycles=baseCycles;
+  const cycles1=centerCycles-beatCycles/2;
+  const cycles2=centerCycles+beatCycles/2;
+  const phase=2*Math.PI*state.time;
   const labels=[['คลื่นเสียง f₁','#38bdf8'],['คลื่นเสียง f₂','#ef4444'],['คลื่นรวม','#22c55e']];
   labels.forEach((arr,i)=>{
     const y0=lanes[i];
     ctx.strokeStyle='rgba(226,232,240,.18)'; ctx.setLineDash([6,6]); ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(left,y0); ctx.lineTo(right,y0); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle='rgba(2,6,23,.44)'; ctx.strokeStyle='rgba(148,163,184,.16)'; rr(ctx,14,y0-25,132,30,12,true,true);
-    ctx.strokeStyle=arr[1]; ctx.lineWidth=3.4; ctx.beginPath(); ctx.moveTo(24,y0-10); ctx.lineTo(54,y0-10); ctx.stroke();
-    ctx.fillStyle='rgba(226,232,240,.95)'; ctx.font='800 12px system-ui,sans-serif'; ctx.fillText(arr[0],62,y0-5);
+    ctx.fillStyle='rgba(2,6,23,.44)'; ctx.strokeStyle='rgba(148,163,184,.16)'; rr(ctx,14,y0-21,118,26,10,true,true);
+    ctx.strokeStyle=arr[1]; ctx.lineWidth=3.4; ctx.beginPath(); ctx.moveTo(24,y0-9); ctx.lineTo(50,y0-9); ctx.stroke();
+    ctx.fillStyle='rgba(226,232,240,.95)'; ctx.font='800 11px system-ui,sans-serif'; ctx.fillText(arr[0],56,y0-3);
   });
   function makePts(fn,y0,scale=1,step=3){
     const pts=[];
@@ -236,9 +239,9 @@ function draw(){
     }
     return pts;
   }
-  const wave1=u=>Math.sin(2*Math.PI*(cycles1*u)-beatPhase);
-  const wave2=u=>Math.sin(2*Math.PI*(cycles2*u)-beatPhase);
-  const envelope=u=>Math.cos(Math.PI*dfForView*viewSeconds*u - beatPhase*.18);
+  const wave1=u=>Math.sin(2*Math.PI*cycles1*u-phase);
+  const wave2=u=>Math.sin(2*Math.PI*cycles2*u-phase);
+  const envelope=u=>Math.cos(Math.PI*beatCycles*u);
   const sum=u=>(wave1(u)+wave2(u))*0.55;
   drawLine(ctx,makePts(wave1,lanes[0],ampPx),'#38bdf8',2.5);
   drawLine(ctx,makePts(wave2,lanes[1],ampPx),'#ef4444',2.5);
@@ -254,18 +257,12 @@ function draw(){
   drawDot(ctx,probeX,lanes[1]-wave2(probeU)*ampPx,5,'#ef4444');
   drawDot(ctx,probeX,lanes[2]-sum(probeU)*ampPx,6,'#22c55e');
 
-  const loudness=Math.abs(envelope(probeU));
-  ctx.save();
-  ctx.fillStyle='rgba(2,6,23,.56)';ctx.strokeStyle='rgba(148,163,184,.18)';rr(ctx,right-204,14,184,46,14,true,true);
-  ctx.fillStyle='rgba(226,232,240,.92)';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('ความดังที่จุดสังเกต',right-190,31);
-  ctx.fillStyle='#f59e0b';ctx.fillRect(right-190,44,Math.max(2,135*loudness),8);
-  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.strokeRect(right-190,44,135,8);
-  ctx.fillStyle='rgba(226,232,240,.9)';ctx.font='700 12px system-ui,sans-serif';ctx.fillText(`${fmt(loudness*100,0)}%`,right-48,52);
-  ctx.restore();
+  // The orange dashed curves around the resultant wave show relative loudness/envelope.
+  // No extra floating box is drawn inside the graph, keeping the canvas balanced on mobile.
 }
 function tick(now){
   const dt=Math.min(.05,(now-state.last)/1000);state.last=now;
-  if(state.running) state.time += dt*params().timeSpeed*0.22;
+  if(state.running) state.time += dt*params().timeSpeed*0.16;
   draw(); state.raf=requestAnimationFrame(tick);
 }
 function play(){state.running=true;} function pause(){state.running=false;} function reset(){state.time=0;state.last=performance.now();draw();}
